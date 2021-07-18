@@ -29,7 +29,7 @@ def BruteForce(atak_port):
                 print("[+] Login succed with user: {} and password: {}".format(user,password))
                 print(" -------------------------------------------------------------------")
                 while True:
-                    cmd=input("Choose a command to execute in the system: ")
+                    cmd=input("Choose a command to execute in the system or exit: ")
                     if cmd == "exit":
                         SSHClient.close()
                         exit(0)
