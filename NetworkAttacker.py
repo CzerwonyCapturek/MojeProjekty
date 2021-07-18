@@ -15,9 +15,9 @@ def BruteForce(atak_port):
     SSHClient=paramiko.SSHClient()
     SSHClient.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-    with open(r"/home/jacek/GitHub/MojeProjekty/Python/users.txt", "r") as users_plik:
+    with open(r"users.txt", "r") as users_plik:
         users=users_plik.read().split('\n')
-    with open(r"/home/jacek/GitHub/MojeProjekty/Python/passwords.txt", "r") as passwords_plik:
+    with open(r"passwords.txt", "r") as passwords_plik:
         passwords=passwords_plik.read().split('\n')
 
     for user in users:
