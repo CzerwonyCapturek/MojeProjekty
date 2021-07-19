@@ -6,10 +6,14 @@ from scapy.layers.inet import TCP, IP, sr1, ICMP
 
 
 Registered_ports=range(1,1023)
+#Registered_ports = [21,22,23,25,111,80,443]
 Open_Ports=[]
 Port22 = False
-TargetFlaga = False
-
+#TargetFlaga = False
+#TCP_FLAGS_SYN = 0x02
+#TCP_FLAGS_ACK = 0x10
+#TCP_FLAGS_RST = 0x04
+#TCP_FLAGS_SYNACK = TCP_FLAGS_ACK | TCP_FLAGS_SYN
 
 
 
@@ -55,15 +59,27 @@ def ScanPort(atak_port):
         if(response.getlayer(TCP).flags == 0x12):
             close_connection = sr(IP(dst=target)/TCP(sport=src_port,dport=atak_port,flags='R'),timeout=2, verbose=0)
             print(f" port {atak_port} is open.")
+            Open_Ports.append(atak_port)
             if atak_port==22:
                 Port22=True
             
 
 def TargetCheck(target):
-    global TargetFlaga
-    target_icmp = sr1(IP(dst = target)/ICMP(),timeout = 3)
-    if target_icmp.code==3:
-        TargetFlaga = True
+    try:
+        conf.verb = 0
+        icmp_reqest = IP(dst=target)/ICMP()
+        icmp_reply = sr1(icmp_reqest, timeout=3, verbose=0)
+        print(str(icmp_reply))
+        if icmp_reply is None:
+            print('ICMP Reply None')
+            return False
+        if icmp_reply.haslayer(ICMP):
+            print('The target is available ')
+            return True
+    except Exception:
+        print('An error occured')
+        return False
+    
 
 
 
@@ -72,8 +88,8 @@ target = input("Please specify a target: ")
 #192.168.80.133
 TargetCheck(target)
 
-if TargetFlaga:
-    Print("IP jest ok")
+if TargetCheck(target):
+    print("Now it scans open ports:")
     for destination_port in range(0, 1000):
         ScanPort(destination_port)
 
