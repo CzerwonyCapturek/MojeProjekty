@@ -61,15 +61,14 @@ def ScanPort(atak_port):
 
 def TargetCheck(target):
     global TargetFlaga
-    response = ""
-    response = sr1(IP(dst = target)/ICMP(),timeout = 3)
-        if(response !=""):
-            TargetFlaga = True
+    target_icmp = sr1(IP(dst = target)/ICMP(),timeout = 3)
+    if target_icmp.code==3:
+        TargetFlaga = True
 
 
 
 target = input("Please specify a target: ")
-#10.0.0.122
+#10.0.0.123
 #192.168.80.133
 TargetCheck(target)
 
