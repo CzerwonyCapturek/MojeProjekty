@@ -1,6 +1,6 @@
-import random
+#import random
 import paramiko
-import os
+#import os
 from scapy.all import *
 from scapy.layers.inet import TCP, IP, sr1, ICMP
 
